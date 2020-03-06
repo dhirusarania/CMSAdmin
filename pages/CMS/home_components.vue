@@ -11,7 +11,6 @@
             <draggable
               class="dragArea list-group"
               :list="list1"
-              :clone="clone"
               :group="{ name: 'people', pull: pullFunction }"
               @start="start"
             >
@@ -23,7 +22,7 @@
             </draggable>
           </div>
           <div class="col-6">
-            <h3>Inactive Components</h3>
+            <h3>Inactive Dynamic Components</h3>
             <draggable class="dragArea list-group" :list="list2" group="people">
               <div
                 class="list-group-item"
@@ -57,7 +56,8 @@ export default {
           id: 6
         }
       ],
-      list2: []
+      list2: [],
+      static_data: []
     };
   },
   mounted() {
@@ -79,6 +79,35 @@ export default {
     getInActiveComponents: function() {
       this.$store.dispatch("getInActiveComponents").then(res => {
         this.list2 = JSON.parse(res.data.value);
+        this.getStaticComponents();
+      });
+    },
+
+    getStaticComponents: function() {
+      this.$store.dispatch("getActiveStaticComponents").then(res => {
+        console.log(res.data);
+        var static_ = res.data.filter(v => v.name = '* ' + v.name)
+        
+
+        console.log(static_)
+        console.log(this.list2)
+          
+          static_ = static_.filter(
+            v => !this.containsObject(v, this.list2)
+          );
+
+          console.log(this.list2)
+
+        for(var i = 0; i < static_.length; i++){
+          this.list2.push(static_[i])
+        }
+
+          this.list2 = this.list2.filter(
+            v => !this.containsObject_id(v, this.list1)
+          );
+
+
+        
       });
     },
 
@@ -101,7 +130,29 @@ export default {
           alert("Home Components Updated Successfully");
         });
       });
-    }
+    },
+        containsObject: function(obj, list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if (JSON.stringify(list[i]) === JSON.stringify(obj)) {
+          return true;
+        }
+      }
+      return false;
+    },
+        containsObject_id: function(obj, list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        console.log("----")
+        console.log(list[i].id)
+        console.log(obj.id)
+        if (list[i].id === obj.id) {
+          console.log("Same")
+          return true;
+        }
+      }
+      return false;
+    },
   }
 };
 </script>
