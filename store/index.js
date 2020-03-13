@@ -869,6 +869,25 @@ export const actions = {
                 });
         });
     },
+    updateActiveComponentsGeneral({ commit, state }, { payload, id }) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "PUT",
+                    data: payload,
+                    url: state.api.getActiveComponents + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
     getActiveStaticComponents({ commit, state }) {
         return new Promise((resolve, reject) => {
             axios({
@@ -883,5 +902,102 @@ export const actions = {
                     console.log(err);
                 });
         });
-    }
+    },
+    getActiveComponentsGeneral({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.getActiveComponents + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    getSingleStaticComponents({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.editStaticComponents + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    addStaticComponents({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "POST",
+                    data: payload,
+                    url: state.api.createStaticComponents,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    reject()
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    editStaticComponents({ commit, state }, { payload, id }) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "PUT",
+                    data: payload,
+                    url: state.api.editStaticComponents + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    deleteStaticComponents({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "DELETE",
+                    url: state.api.editStaticComponents + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
 };

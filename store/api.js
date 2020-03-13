@@ -3,7 +3,7 @@ var url;
 if (process.env.NODE_ENV == "development") {
     var url = "http://127.0.0.1:8000";
 } else {
-    var url = "/backend";
+    var url = "http://api.ft500.in/";
 }
 
 console.log(url);
@@ -65,7 +65,11 @@ export const state = () => ({
 
     getActiveComponents: url + "/get_active_home_components/",
 
-    getActiveStaticComponents: url + "/get_static_components"
+    getActiveStaticComponents: url + "/get_static_components",
+
+    editStaticComponents: url + "/edit_static_components/", //pk
+
+    createStaticComponents: url + "/create_static_components" //pk
 });
 
 export const getters = {

@@ -62,6 +62,12 @@
         </nuxt-link>
       </div>
       <div class="navbar__parent">
+        <nuxt-link to="/CMS/static_components">
+          <i data-feather="phone-call"></i>
+          <span>Static Components</span>
+        </nuxt-link>
+      </div>
+      <div class="navbar__parent">
         <nuxt-link to="/CMS/contact-form">
           <i data-feather="file"></i>
           <span>Contact Us Form</span>
@@ -71,6 +77,18 @@
         <nuxt-link to="/CMS/home_components">
           <i data-feather="home"></i>
           <span>Home Components</span>
+        </nuxt-link>
+      </div>
+      <div class="navbar__parent">
+        <nuxt-link to="/CMS/about_components">
+          <i data-feather="home"></i>
+          <span>About Components</span>
+        </nuxt-link>
+      </div>
+      <div class="navbar__parent">
+        <nuxt-link to="/CMS/category_components">
+          <i data-feather="home"></i>
+          <span>Category Components</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">

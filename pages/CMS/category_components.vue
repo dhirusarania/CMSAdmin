@@ -46,7 +46,6 @@ export default {
   },
   data() {
     return {
-      home_comp: [],
       list1: [
         {
           name: "Kaustubh",
@@ -62,7 +61,6 @@ export default {
     };
   },
   mounted() {
-    // this.getInActiveComponents();
     this.getActiveComponents();
   },
 
@@ -77,37 +75,38 @@ export default {
       this.controlOnStart = originalEvent.ctrlKey;
     },
 
-    // getInActiveComponents: function() {
-    //   this.$store.dispatch("getInActiveComponents").then(res => {
-    //     this.list2 = JSON.parse(res.data.value);
-    //     this.getStaticComponents();
-    //   });
-    // },
+ 
 
     getStaticComponents: function() {
       this.$store.dispatch("getActiveStaticComponents").then(res => {
         console.log(res.data);
-        var static_ = res.data.filter(v => (v.name = "* " + v.name));
+        var static_ = res.data.filter(v => v.name = '* ' + v.name)
+        
 
-        console.log(static_);
-        console.log(this.list2);
+        console.log(static_)
+        console.log(this.list2)
+          
+          static_ = static_.filter(
+            v => !this.containsObject(v, this.list2)
+          );
 
-        static_ = static_.filter(v => !this.containsObject(v, this.list2));
+          console.log(this.list2)
 
-        console.log(this.list2);
-
-        for (var i = 0; i < static_.length; i++) {
-          this.list2.push(static_[i]);
+        for(var i = 0; i < static_.length; i++){
+          this.list2.push(static_[i])
         }
 
-        this.list2 = this.list2.filter(
-          v => !this.containsObject_id(v, this.list1)
-        );
+          this.list2 = this.list2.filter(
+            v => !this.containsObject_id(v, this.list1)
+          );
+
+
+        
       });
     },
 
     getActiveComponents: function() {
-      this.$store.dispatch("getActiveComponentsGeneral", 2).then(res => {
+      this.$store.dispatch("getActiveComponentsGeneral", 3).then(res => {
         this.list1 = JSON.parse(res.data.value);
         this.getHomeComponents();
       });
@@ -121,18 +120,18 @@ export default {
     },
 
     saveHomeComponents: function() {
-      var id = 2;
-      var payload = new FormData();
-      payload.append("key", "Active Components");
-      payload.append("value", JSON.stringify(this.list1));
 
-      this.$store
-        .dispatch("updateActiveComponentsGeneral", { payload, id })
-        .then(res => {
+        var id = 3
+
+        var payload = new FormData();
+        payload.append("key", "Category");
+        payload.append("value", JSON.stringify(this.list1));
+
+        this.$store.dispatch("updateActiveComponentsGeneral", {payload , id}).then(res => {
           alert("Home Components Updated Successfully");
         });
     },
-    containsObject: function(obj, list) {
+        containsObject: function(obj, list) {
       var i;
       for (i = 0; i < list.length; i++) {
         if (JSON.stringify(list[i]) === JSON.stringify(obj)) {
@@ -141,19 +140,19 @@ export default {
       }
       return false;
     },
-    containsObject_id: function(obj, list) {
+        containsObject_id: function(obj, list) {
       var i;
       for (i = 0; i < list.length; i++) {
-        console.log("----");
-        console.log(list[i].id);
-        console.log(obj.id);
+        console.log("----")
+        console.log(list[i].id)
+        console.log(obj.id)
         if (list[i].id === obj.id) {
-          console.log("Same");
+          console.log("Same")
           return true;
         }
       }
       return false;
-    }
+    },
   }
 };
 </script>
