@@ -3,7 +3,7 @@ var url;
 if (process.env.NODE_ENV == "development") {
     var url = "http://127.0.0.1:8000";
 } else {
-    var url = "http://api.ft500.in/";
+    var url = "http://api.ft500.in";
 }
 
 console.log(url);
