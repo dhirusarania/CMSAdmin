@@ -34,11 +34,7 @@
             <label>Email</label>
             <input type="text" id="email" placeholder="Email" class="form-style" v-model="email" />
             <label>Contact Info</label>
-            <div
-              id="editorjs"
-              class="rounded my-4 shadow-lg"
-              style="border: 1px solid grey; padding: 30px; width:678px"
-            ></div>
+<div id="editor-container" style="min-height: 300px"></div>
 
             <button
               @click="addContactCMS"
@@ -54,13 +50,7 @@
 </template>
 
 <script>
-let EditorJS, List, Paragraph;
-
-if (process.browser) {
-  EditorJS = require("@editorjs/editorjs");
-  List = require("@editorjs/list");
-  Paragraph = require("@editorjs/paragraph");
-}
+let EditorJS, Header, List, Image, quill;
 
 export default {
   data() {
@@ -73,32 +63,40 @@ export default {
     };
   },
   mounted() {
-    this.editor = new EditorJS({
-      holder: "editorjs",
-      tools: {
-        list: List,
-        paragraph: {
-          class: Paragraph,
-          inlineToolbar: true
-        }
-      }
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
     });
   },
 
   methods: {
     addContactCMS: function() {
-      this.editor.save().then(async outputData => {
         var payload = new FormData();
         payload.append("title", this.title);
         payload.append("phone1", this.phone1);
         payload.append("phone2", this.phone2);
         payload.append("email", this.email);
         payload.append("location", this.location);
-        payload.append("contact_info", JSON.stringify(outputData.blocks));
+        payload.append("contact_info", JSON.stringify(quill.getContents()));
         this.$store.dispatch("addContactCMS", payload).then(res => {
           this.$router.push("/CMS/contact");
         });
-      });
     }
   }
 };

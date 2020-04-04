@@ -37,15 +37,51 @@
               class="form-style"
               v-model="data.button_url"
             />
-            <label>About Image</label>
-            <input
-              type="file"
-              id="file"
-              ref="file"
-              v-on:change="handleFileUpload()"
-              style="margin-top: 30px; margin-bottom: 30px"
-            />
-            <label>About Info</label>
+            <br />
+            <label>Background</label>
+            <form>
+              <div class="myradio">
+                <input
+                  type="radio"
+                  name="myRadio"
+                  id="one"
+                  value="0"
+                  v-model="background"
+                  class="myradio__input"
+                  checked
+                />
+                <label for="one" class="myradio__label">Image</label>
+              </div>
+              <div class="myradio">
+                <input
+                  type="radio"
+                  name="myRadio"
+                  id="two"
+                  value="1"
+                  v-model="background"
+                  class="myradio__input"
+                />
+                <label for="two" class="myradio__label">Color</label>
+              </div>
+            </form>
+
+            <div v-if="background == 0">
+              <label>Image</label>
+              <br />
+              <input
+                type="file"
+                id="file"
+                ref="file"
+                v-on:change="handleFileUpload()"
+                style="margin-top: 30px; margin-bottom: 30px"
+              />
+            </div>
+            <div v-if="background == 1">
+              <client-only placeholder="Loading...">
+                <chrome-picker :disableAlpha="true" v-model="color" />
+              </client-only>
+            </div>
+            <label>Content</label>
             <div
               id="editorjs"
               class="rounded my-4 shadow-lg"
@@ -68,6 +104,8 @@
 <script>
 let EditorJS, List, Paragraph;
 
+import { Chrome } from "vue-color";
+
 if (process.browser) {
   EditorJS = require("@editorjs/editorjs");
   List = require("@editorjs/list");
@@ -83,8 +121,15 @@ export default {
       image_name: "",
       image_url: "",
       file: "",
-      info: []
+      info: [],
+      color: {
+        hex: "#F7E18C"
+      },
+      background: 0
     };
+  },
+  components: {
+    "chrome-picker": Chrome
   },
   mounted() {
     // this.getAboutCMSById();
@@ -137,18 +182,21 @@ export default {
         var id = this.$route.params.id;
         payload.append("name", this.data.name);
         payload.append("title", this.data.title);
-        payload.append("content", this.data.content);
         payload.append("button", this.data.button);
-        payload.append("button_url", this.data.button_url);
-        if (this.file) {
+
+        payload.append("bgcolor", 0);
+        if (this.background == 1) {
+          payload.append("bgcolor", this.color['hex']);
+        } else if (this.background == 0 && this.file) {
           payload.append("bgimage", this.file);
         }
+
+        payload.append("button_url", this.data.button_url);
+
         payload.append("content", JSON.stringify(outputData.blocks));
-        this.$store
-          .dispatch("addStaticComponents", payload)
-          .then(res => {
-            this.$router.push("/CMS/static_components");
-          })
+        this.$store.dispatch("addStaticComponents", payload).then(res => {
+          this.$router.push("/CMS/static_components");
+        });
       });
     }
   }
@@ -182,6 +230,72 @@ select {
   border: 1px solid #b0b0b0;
   border-radius: 3px;
   color: #606060;
+}
+
+/* RADIO BUTTON STLYING BEGINS */
+.myradio {
+  display: inline-block;
+  border-radius: 999px;
+  margin: 5px;
+}
+.myradio__input {
+  opacity: 0;
+  position: absolute;
+}
+.myradio__label {
+  border-radius: 9999px;
+  padding: 3px 15px 8px 40px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.5s;
+}
+.myradio__label::before {
+  content: "";
+  border-radius: 9999px;
+  width: 16px;
+  height: 16px;
+  margin: 3px 0;
+  position: absolute;
+  z-index: 1;
+}
+.myradio__label::after {
+  content: "";
+  border-radius: 9999px;
+  width: 12px;
+  height: 12px;
+  margin: 3px 0;
+  position: absolute;
+  z-index: 1;
+}
+.myradio__label::before {
+  background-color: #dcdcdc;
+  border: 2px solid #dcdcdc;
+  top: 4px;
+  left: 10px;
+  transition: all 0.5s;
+}
+.myradio__label::after {
+  background-color: #ffffff;
+  top: 6px;
+  left: 12px;
+  transition: all 0.15s;
+  transition-timing-function: ease-out;
+}
+.myradio__label:hover {
+  background-color: rgba(114, 86, 248, 0.1);
+}
+.myradio__label:hover::before {
+  border: 2px solid #7256f8;
+}
+.myradio__input:checked ~ .myradio__label::before {
+  background-color: #7256f8;
+  border: 2px solid #7256f8;
+}
+.myradio__input:checked ~ .myradio__label::after {
+  width: 8px;
+  height: 8px;
+  top: 8px;
+  left: 14px;
 }
 </style>
 

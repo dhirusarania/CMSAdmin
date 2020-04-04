@@ -32,6 +32,7 @@
             </draggable>
           </div>
         </div>
+        <p>Note: * marked are static Components</p>
       </div>
     </div>
   </div>

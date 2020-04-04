@@ -30,7 +30,7 @@
 
     <perfect-scrollbar id="mySidenav" class="sidenav hidden-xs hidden-sm padding-bottom-30">
       <div class="flex align-item">
-        <img src="~static/files/logo_new.png" class="sideNav__Logo" />
+        <img :src="logo" class="sideNav__Logo" />
         <div style="cursor:pointer" class="hide-on-med-and-up" @click="toggleSidenav">
           <i data-feather="x"></i>
         </div>
@@ -47,6 +47,12 @@
         <nuxt-link to="/CMS/about">
           <i data-feather="info"></i>
           <span>About</span>
+        </nuxt-link>
+      </div>
+      <div class="navbar__parent">
+        <nuxt-link to="/CMS/startup">
+          <i data-feather="filter"></i>
+          <span>Startups</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">
@@ -253,7 +259,8 @@ export default {
     currentUserEmail: "",
     pickup_count: 0,
     message_count: 0,
-    username: ""
+    username: "",
+    logo: ""
   }),
 
   computed: {
@@ -263,6 +270,8 @@ export default {
   mounted() {
     feather.replace({ color: "white" });
 
+    this.getHomeCMS();
+
     this.currentUserEmail = localStorage.getItem("currentUserEmail");
     this.username = localStorage.getItem("user_name");
     // console.log(this.username)
@@ -271,6 +280,14 @@ export default {
     toggleSidenav: function() {
       $("#mySidenav").toggleClass("hidden-xs hidden-sm");
     },
+    getHomeCMS: function() {
+      this.$store.dispatch("getHomeCMS").then(res => {
+        if (res.data.length > 0) {
+          this.logo = res.data.filter(v => v.active == true)[0].logo;
+        }
+      });
+    },
+
     logout: function() {
       document.cookie.split(";").forEach(function(c) {
         document.cookie = c

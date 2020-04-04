@@ -26,11 +26,7 @@
               </p>
             </div>
             <label>About Info</label>
-            <div
-              id="editorjs"
-              class="rounded my-4 shadow-lg"
-              style="border: 1px solid grey; padding: 30px; width:678px;"
-            ></div>
+            <div id="editor-container" style="min-height: 300px"></div>
 
             <button
               @click="updateAboutCMS"
@@ -46,13 +42,8 @@
 </template>
 
 <script>
-let EditorJS, List, Paragraph;
+let EditorJS, Header, List, Image, quill;
 
-if (process.browser) {
-  EditorJS = require("@editorjs/editorjs");
-  List = require("@editorjs/list");
-  Paragraph = require("@editorjs/paragraph");
-}
 
 export default {
   data() {
@@ -67,6 +58,27 @@ export default {
   },
   mounted() {
     this.getAboutCMSById();
+
+        quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
   },
   methods: {
     handleFileUpload: function() {
@@ -84,23 +96,12 @@ export default {
           this.image_url = res.data.about_image;
           this.image_name = res.data.about_image.slice(41);
         }
-        this.info = JSON.parse(res.data.about_info);
-        this.editor = new EditorJS({
-          holder: "editorjs",
-          tools: {
-            list: List,
-            paragraph: {
-              class: Paragraph,
-              inlineToolbar: true
-            }
-          },
-          data: { blocks: this.info }
-        });
+        console.log(JSON.parse(res.data.about_info))
+          quill.setContents(JSON.parse(res.data.about_info));
       });
     },
 
     updateAboutCMS: function() {
-      this.editor.save().then(async outputData => {
         var payload = new FormData();
         payload.append("id", this.$route.params.id);
         payload.append("title", this.title);
@@ -108,10 +109,9 @@ export default {
         if (this.file) {
           payload.append("about_image", this.file);
         }
-        payload.append("about_info", JSON.stringify(outputData.blocks));
+        payload.append("about_info", JSON.stringify(quill.getContents()));
         this.$store.dispatch("updateAboutCMS", payload).then(res => {});
         this.$router.push("/CMS/about");
-      });
     }
   }
 };

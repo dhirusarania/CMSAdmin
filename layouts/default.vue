@@ -165,4 +165,13 @@ h3 {
 .vgt-wrap {
   width: 100%;
 }
+
+.vc-chrome-toggle-btn {
+  display: none;
+}
+
+#editor-container {
+  min-height: 517px;
+  height: 323px;
+}
 </style>

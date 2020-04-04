@@ -20,6 +20,7 @@
     "nuxt": "^2.0.0",
     "postcss-color-mod-function": "^3.0.3",
     "toastr": "^2.1.4",
+    "vue-color": "^2.7.1",
     "vue-good-table": "^2.18.0",
     "vue2-perfect-scrollbar": "^1.2.1",
     "vuedraggable": "^2.23.2"

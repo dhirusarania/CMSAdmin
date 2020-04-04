@@ -111,7 +111,7 @@ export const actions = {
     deleteHomeCMS({ commit, state }, payload) {
         return new Promise((resolve, reject) => {
             axios({
-                    method: "PUT",
+                    method: "DELETE",
                     data: payload,
                     url: state.api.deleteHomeCMS + payload.get("id"),
                     contentType: "application/json",
@@ -504,6 +504,26 @@ export const actions = {
                     method: "PUT",
                     data: payload,
                     url: state.api.activateAboutCmsById + payload.get("id"),
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
+
+    makefeaturedById({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "PUT",
+                    data: payload,
+                    url: state.api.makefeaturedById + payload.get("id"),
                     contentType: "application/json",
                     headers: {
                         Authorization: "token " + localStorage.getItem("token")
@@ -941,6 +961,25 @@ export const actions = {
         });
     },
 
+    getAllStartup({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.all_startups,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
     addStaticComponents({ commit, state }, payload) {
         return new Promise((resolve, reject) => {
             axios({
@@ -987,6 +1026,44 @@ export const actions = {
             axios({
                     method: "DELETE",
                     url: state.api.editStaticComponents + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    deleteContact({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "DELETE",
+                    url: state.api.deleteContact + id,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "Token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    delete_footer({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "DELETE",
+                    url: state.api.delete_footer + id,
                     contentType: "application/json",
                     headers: {
                         Authorization: "Token " + localStorage.getItem("token")

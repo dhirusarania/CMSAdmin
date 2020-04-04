@@ -32,6 +32,7 @@
             </draggable>
           </div>
         </div>
+        <p>Note: * marked are static Components</p>
       </div>
     </div>
   </div>
@@ -128,7 +129,7 @@ export default {
         payload.append("value", JSON.stringify(this.list1));
 
         this.$store.dispatch("updateActiveComponentsGeneral", {payload , id}).then(res => {
-          alert("Home Components Updated Successfully");
+          alert("Category Components Updated Successfully");
         });
     },
         containsObject: function(obj, list) {

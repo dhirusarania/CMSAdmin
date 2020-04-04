@@ -103,11 +103,10 @@
       deleteFooterCMS: function(id) {
         var payload = new FormData();
         payload.append("id", id);
-        payload.append("deleted_flag", true);
         var x = confirm("Are you sure you want to delete?");
         if (x)
-          return this.$store.dispatch("deleteHomeCMS", payload).then(res => {
-            this.getHomeCMS();
+          return this.$store.dispatch("delete_footer", id).then(res => {
+            this.getFooterCMS();
           });
         else return false;
       },

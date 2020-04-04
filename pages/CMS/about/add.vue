@@ -28,11 +28,12 @@
             />
 
             <label>About Info</label>
-            <div
+            <!-- <div
               id="editorjs"
               class="rounded my-4 shadow-lg"
               style="border: 1px solid grey; padding: 30px; width:678px;"
-            ></div>
+            ></div> -->
+            <div id="editor-container" style="min-height: 300px"></div>
             <button
               @click="addAboutCMS"
               type="button"
@@ -49,13 +50,9 @@
 </template>
 
 <script>
-  let EditorJS, List, Paragraph;
 
-  if (process.browser) {
-    EditorJS = require("@editorjs/editorjs");
-    List = require("@editorjs/list");
-    Paragraph = require("@editorjs/paragraph");
-  }
+let EditorJS, Header, List, Image, quill;
+
 
   export default {
     data() {
@@ -69,16 +66,29 @@
       };
     },
     mounted() {
-      this.editor = new EditorJS({
-        holder: "editorjs",
-        tools: {
-          list: List,
-          paragraph: {
-            class: Paragraph,
-            inlineToolbar: true
-          }
-        }
-      });
+
+
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
+
     },
 
     methods: {
@@ -87,16 +97,14 @@
       },
 
       addAboutCMS: function() {
-        this.editor.save().then(async outputData => {
           var payload = new FormData();
           payload.append("title", this.title);
           payload.append("about_image", this.file);
           payload.append("active", false);
-          payload.append("about_info", JSON.stringify(outputData.blocks));
+          payload.append("about_info", JSON.stringify(quill.getContents()));
           this.$store.dispatch("addAboutCMS", payload).then(res => {
             this.$router.push("/CMS/about");
           });
-        });
       }
     }
   };
@@ -109,6 +117,7 @@
   width: 680px;
   padding: 8px 14px;
 }
+
 
 @media (max-width: 37.5em) {
   .form-style {

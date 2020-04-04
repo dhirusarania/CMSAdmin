@@ -29,7 +29,11 @@ export const state = () => ({
 
     activateCategoryCmsById: url + "/active_category_cms/",
 
+    makefeaturedById: url + "/make_featured/",
+
     getContactCMS: url + "/contact_cms",
+
+    deleteContact: url + "/deleteContact/",
 
     getContactCMSById: url + "/edit_contact_cms/",
 
@@ -38,6 +42,8 @@ export const state = () => ({
     activatedContactCMS: url + "/activated_contact_cms",
 
     getAboutCMS: url + "/about_cms",
+
+    all_startups: url + "/all_startups",
 
     getAboutCMSById: url + "/edit_about_cms/",
 
@@ -69,7 +75,9 @@ export const state = () => ({
 
     editStaticComponents: url + "/edit_static_components/", //pk
 
-    createStaticComponents: url + "/create_static_components" //pk
+    createStaticComponents: url + "/create_static_components", //pk
+
+    delete_footer: url + "/delete_footer/" //pk
 });
 
 export const getters = {
