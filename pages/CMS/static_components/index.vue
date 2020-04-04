@@ -6,7 +6,7 @@
           class="column-padding header-bottom"
           style="display: flex; justify-content: space-between"
         >
-          <h3 style="display: flex;align-items: center;">ll Static Components</h3>
+          <h3 style="display: flex;align-items: center;">Static Components</h3>
           <nuxt-link to="/CMS/static_components/add" style="text-decoration:none">
             <button class="btn btn-red addTrainer">
               <span class="white-text">Add Static Components</span>

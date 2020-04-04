@@ -52,7 +52,7 @@
       <div class="navbar__parent">
         <nuxt-link to="/CMS/startup">
           <i data-feather="filter"></i>
-          <span>Startups</span>
+          <span>Featured Startups</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">

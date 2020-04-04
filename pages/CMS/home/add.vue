@@ -37,6 +37,9 @@
               <chrome-picker :disableAlpha="true" v-model="color"/>
             </client-only>
 
+            <label style="padding-top:30px">Privacy Policy</label>
+            <div id="editor-container" style="min-height: 300px"></div>
+
             <button
               @click="addHomeCMS"
               type="button"
@@ -51,13 +54,7 @@
 </template>
 
 <script>
-let EditorJS, List;
-
-if (process.browser) {
-  EditorJS = require("@editorjs/editorjs");
-  List = require("@editorjs/list");
-}
-
+let EditorJS, Header, List, Image, quill;
 import { Chrome } from 'vue-color'
 
 export default {
@@ -75,7 +72,31 @@ export default {
       color: "#ffce10"
     };
   },
-  mounted() {},
+  mounted() {
+
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
+
+
+  },
   components: {
     'chrome-picker': Chrome
   },
@@ -93,6 +114,7 @@ export default {
       payload.append("header_text_1", this.line1);
       payload.append("header_text_2", this.line2);
       payload.append("header_text_3", this.line3);
+      payload.append("privacy_policy", quill.root.innerHTML);
       payload.append("site_color", this.color['hex']);
       if (this.file) {
         payload.append("header_img", this.file);

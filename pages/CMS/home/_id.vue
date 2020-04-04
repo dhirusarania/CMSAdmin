@@ -61,6 +61,9 @@
               <chrome-picker :disableAlpha="true" v-model="color" />
             </client-only>
 
+            <label style="padding-top:30px">Privacy Policy</label>
+            <div id="editor-container" style="min-height: 300px"></div>
+
             <button
               @click="updateHomeCMS"
               type="button"
@@ -75,7 +78,7 @@
 </template>
 
 <script>
-let EditorJS, List;
+let EditorJS, Header, List, Image, quill;
 
 if (process.browser) {
   EditorJS = require("@editorjs/editorjs");
@@ -104,6 +107,28 @@ export default {
   },
   mounted() {
     this.getHomeCMSById();
+
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
+
   },
   components: {
     "chrome-picker": Chrome
@@ -119,6 +144,7 @@ export default {
         this.line2 = res.data.header_text_2;
         this.line3 = res.data.header_text_3;
         this.color = res.data.site_color;
+         quill.container.firstChild.innerHTML = res.data.privacy_policy
         if (res.data.header_img !== null) {
           this.image_url = res.data.header_img;
           this.image_name = res.data.header_img.slice(40);
@@ -146,6 +172,7 @@ export default {
       payload.append("header_text_2", this.line2);
       payload.append("header_text_3", this.line3);
       payload.append("active", this.status);
+        payload.append("privacy_policy", quill.root.innerHTML);
       payload.append("site_color", this.color["hex"]);
       if (this.file) {
         payload.append("header_img", this.file);

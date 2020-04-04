@@ -92,12 +92,8 @@
               </div>
             </div>
 
-            <label>About Info</label>
-            <div
-              id="editorjs"
-              class="rounded my-4 shadow-lg"
-              style="border: 1px solid grey; padding: 30px; width:678px;"
-            ></div>
+            <label style="margin-top: 30px">About Info</label>
+            <div id="editor-container" style="min-height: 300px"></div>
 
             <button
               @click="updateAboutCMS"
@@ -113,14 +109,7 @@
 </template>
 
 <script>
-let EditorJS, List, Paragraph;
-
-if (process.browser) {
-  EditorJS = require("@editorjs/editorjs");
-  List = require("@editorjs/list");
-  Paragraph = require("@editorjs/paragraph");
-}
-
+let EditorJS, Header, List, Image, quill;
 import { Chrome } from "vue-color";
 
 export default {
@@ -141,6 +130,27 @@ export default {
   },
   mounted() {
     this.getAboutCMSById();
+
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
   },
   components: {
     "chrome-picker": Chrome
@@ -163,42 +173,30 @@ export default {
           if (res.data.about_image !== null) {
             this.image_url = res.data.bgimage;
           }
-          this.info = JSON.parse(res.data.content);
-          this.editor = new EditorJS({
-            holder: "editorjs",
-            tools: {
-              list: List,
-              paragraph: {
-                class: Paragraph,
-                inlineToolbar: true
-              }
-            },
-            data: { blocks: this.info }
-          });
+          console.log(JSON.parse(res.data.content));
+          quill.setContents(JSON.parse(res.data.content));
         });
     },
 
     updateAboutCMS: function() {
-      this.editor.save().then(async outputData => {
-        var payload = new FormData();
-        var id = this.$route.params.id;
-        payload.append("name", this.data.name);
-        payload.append("title", this.data.title);
-        payload.append("button", this.data.button);
-        payload.append("button_url", this.data.button_url);
+      var payload = new FormData();
+      var id = this.$route.params.id;
+      payload.append("name", this.data.name);
+      payload.append("title", this.data.title);
+      payload.append("button", this.data.button);
+      payload.append("button_url", this.data.button_url);
 
-        payload.append("bgcolor", 0);
-        if (this.background == 1) {
-          payload.append("bgcolor", this.color["hex"]);
-        } else if (this.background == 0 && this.file) {
-          payload.append("bgimage", this.file);
-        }
-        payload.append("content", JSON.stringify(outputData.blocks));
-        this.$store
-          .dispatch("editStaticComponents", { payload, id })
-          .then(res => {});
-        this.$router.push("/CMS/static_components");
-      });
+      payload.append("bgcolor", 0);
+      if (this.background == 1) {
+        payload.append("bgcolor", this.color["hex"]);
+      } else if (this.background == 0 && this.file) {
+        payload.append("bgimage", this.file);
+      }
+      payload.append("content", JSON.stringify(quill.getContents()));
+      this.$store
+        .dispatch("editStaticComponents", { payload, id })
+        .then(res => {});
+      this.$router.push("/CMS/static_components");
     }
   }
 };

@@ -82,11 +82,7 @@
               </client-only>
             </div>
             <label>Content</label>
-            <div
-              id="editorjs"
-              class="rounded my-4 shadow-lg"
-              style="border: 1px solid grey; padding: 30px; width:678px;"
-            ></div>
+ <div id="editor-container" style="min-height: 300px"></div>
 
             <button
               @click="updateAboutCMS"
@@ -102,15 +98,11 @@
 </template>
 
 <script>
-let EditorJS, List, Paragraph;
+
 
 import { Chrome } from "vue-color";
 
-if (process.browser) {
-  EditorJS = require("@editorjs/editorjs");
-  List = require("@editorjs/list");
-  Paragraph = require("@editorjs/paragraph");
-}
+let EditorJS, Header, List, Image, quill;
 
 export default {
   data() {
@@ -134,16 +126,25 @@ export default {
   mounted() {
     // this.getAboutCMSById();
 
-    this.editor = new EditorJS({
-      holder: "editorjs",
-      tools: {
-        list: List,
-        paragraph: {
-          class: Paragraph,
-          inlineToolbar: true
-        }
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
       },
-      data: { blocks: this.info }
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
     });
   },
   methods: {
@@ -177,7 +178,6 @@ export default {
     },
 
     updateAboutCMS: function() {
-      this.editor.save().then(async outputData => {
         var payload = new FormData();
         var id = this.$route.params.id;
         payload.append("name", this.data.name);
@@ -193,11 +193,10 @@ export default {
 
         payload.append("button_url", this.data.button_url);
 
-        payload.append("content", JSON.stringify(outputData.blocks));
+        payload.append("content", JSON.stringify(quill.getContents()));
         this.$store.dispatch("addStaticComponents", payload).then(res => {
           this.$router.push("/CMS/static_components");
         });
-      });
     }
   }
 };

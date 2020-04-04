@@ -34,7 +34,7 @@
             <label>Email</label>
             <input type="text" id="email" placeholder="Email" class="form-style" v-model="email" />
             <label>Contact Info</label>
-<div id="editor-container" style="min-height: 300px"></div>
+            <div id="editor-container" style="min-height: 300px"></div>
 
             <button
               @click="addContactCMS"
@@ -87,16 +87,16 @@ export default {
 
   methods: {
     addContactCMS: function() {
-        var payload = new FormData();
-        payload.append("title", this.title);
-        payload.append("phone1", this.phone1);
-        payload.append("phone2", this.phone2);
-        payload.append("email", this.email);
-        payload.append("location", this.location);
-        payload.append("contact_info", JSON.stringify(quill.getContents()));
-        this.$store.dispatch("addContactCMS", payload).then(res => {
-          this.$router.push("/CMS/contact");
-        });
+      var payload = new FormData();
+      payload.append("title", this.title);
+      payload.append("phone1", this.phone1);
+      payload.append("phone2", this.phone2);
+      payload.append("email", this.email);
+      payload.append("location", this.location);
+      payload.append("contact_info", JSON.stringify(quill.getContents()));
+      this.$store.dispatch("addContactCMS", payload).then(res => {
+        this.$router.push("/CMS/contact");
+      });
     }
   }
 };

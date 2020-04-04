@@ -115,7 +115,7 @@ export default {
 
     getHomeComponents: function() {
       this.$store.dispatch("getActiveComponentsGeneral", 1).then(res => {
-        this.list2 = JSON.parse(res.data.value);
+        this.list2 = JSON.parse(res.data.value.replace(/'/g, '"'));
         this.getStaticComponents();
       });
     },
