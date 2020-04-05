@@ -93,7 +93,7 @@ export default {
       payload.append("phone2", this.phone2);
       payload.append("email", this.email);
       payload.append("location", this.location);
-      payload.append("contact_info", JSON.stringify(quill.getContents()));
+      payload.append("contact_info", quill.root.innerHTML);
       this.$store.dispatch("addContactCMS", payload).then(res => {
         this.$router.push("/CMS/contact");
       });

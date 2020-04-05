@@ -98,8 +98,7 @@ export default {
         this.phone1 = res.data.phone1;
         this.phone2 = res.data.phone2;
         this.email = res.data.email;
-        console.log(JSON.parse(res.data.contact_info))
-        quill.setContents(JSON.parse(res.data.contact_info));
+         quill.container.firstChild.innerHTML = res.data.contact_info
       });
     },
 
@@ -111,7 +110,7 @@ export default {
         payload.append("phone1", this.phone1);
         payload.append("phone2", this.phone2);
         payload.append("email", this.email);
-        payload.append("contact_info", JSON.stringify(quill.getContents()));
+        payload.append("contact_info",  quill.root.innerHTML);
         payload.append("active", this.status);
         this.$store.dispatch("updateContactCMS", payload).then(res => {});
         this.$router.push("/CMS/contact");

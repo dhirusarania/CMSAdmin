@@ -173,5 +173,6 @@ h3 {
 #editor-container {
   min-height: 517px;
   height: 323px;
+  max-width: 680px
 }
 </style>

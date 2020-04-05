@@ -96,8 +96,7 @@ export default {
           this.image_url = res.data.about_image;
           this.image_name = res.data.about_image.slice(41);
         }
-        console.log(JSON.parse(res.data.about_info))
-          quill.setContents(JSON.parse(res.data.about_info));
+          quill.container.firstChild.innerHTML = res.data.about_info
       });
     },
 
@@ -109,7 +108,7 @@ export default {
         if (this.file) {
           payload.append("about_image", this.file);
         }
-        payload.append("about_info", JSON.stringify(quill.getContents()));
+        payload.append("about_info", quill.root.innerHTML);
         this.$store.dispatch("updateAboutCMS", payload).then(res => {});
         this.$router.push("/CMS/about");
     }

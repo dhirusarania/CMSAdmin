@@ -29,7 +29,7 @@
     </div>
 
     <perfect-scrollbar id="mySidenav" class="sidenav hidden-xs hidden-sm padding-bottom-30">
-      <div class="flex align-item">
+      <div class="flex align-item" style="display: flex;justify-content: center;">
         <img :src="logo" class="sideNav__Logo" />
         <div style="cursor:pointer" class="hide-on-med-and-up" @click="toggleSidenav">
           <i data-feather="x"></i>

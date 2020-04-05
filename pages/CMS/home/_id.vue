@@ -102,7 +102,7 @@ export default {
       line2: "",
       line3: "",
       status: "",
-      color: "#ffce10"
+      color: "var(--main-bg-color)"
     };
   },
   mounted() {

@@ -69,7 +69,7 @@ export default {
       line1: "",
       line2: "",
       line3: "",
-      color: "#ffce10"
+      color: "var(--main-bg-color)"
     };
   },
   mounted() {

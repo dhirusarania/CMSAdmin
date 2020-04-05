@@ -101,7 +101,7 @@ let EditorJS, Header, List, Image, quill;
           payload.append("title", this.title);
           payload.append("about_image", this.file);
           payload.append("active", false);
-          payload.append("about_info", JSON.stringify(quill.getContents()));
+          payload.append("about_info", quill.root.innerHTML);
           this.$store.dispatch("addAboutCMS", payload).then(res => {
             this.$router.push("/CMS/about");
           });
