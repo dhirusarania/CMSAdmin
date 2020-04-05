@@ -102,7 +102,7 @@ export default {
       line2: "",
       line3: "",
       status: "",
-      color: "var(--main-bg-color)"
+      color: { hex: "#57D9E5" }
     };
   },
   mounted() {
@@ -128,7 +128,6 @@ export default {
     quill.on("text-change", function() {
       this.delta = quill.getContents();
     });
-
   },
   components: {
     "chrome-picker": Chrome
@@ -143,8 +142,8 @@ export default {
         this.line1 = res.data.header_text_1;
         this.line2 = res.data.header_text_2;
         this.line3 = res.data.header_text_3;
-        this.color = res.data.site_color;
-         quill.container.firstChild.innerHTML = res.data.privacy_policy
+        this.color.hex = res.data.site_color;
+        quill.container.firstChild.innerHTML = res.data.privacy_policy;
         if (res.data.header_img !== null) {
           this.image_url = res.data.header_img;
           this.image_name = res.data.header_img.slice(40);
@@ -172,7 +171,7 @@ export default {
       payload.append("header_text_2", this.line2);
       payload.append("header_text_3", this.line3);
       payload.append("active", this.status);
-        payload.append("privacy_policy", quill.root.innerHTML);
+      payload.append("privacy_policy", quill.root.innerHTML);
       payload.append("site_color", this.color["hex"]);
       if (this.file) {
         payload.append("header_img", this.file);
