@@ -173,8 +173,7 @@ export default {
           if (res.data.about_image !== null) {
             this.image_url = res.data.bgimage;
           }
-          console.log(JSON.parse(res.data.content));
-          quill.setContents(JSON.parse(res.data.content));
+          quill.container.firstChild.innerHTML = res.data.content
         });
     },
 
@@ -192,7 +191,7 @@ export default {
       } else if (this.background == 0 && this.file) {
         payload.append("bgimage", this.file);
       }
-      payload.append("content", JSON.stringify(quill.getContents()));
+      payload.append("content",  quill.root.innerHTML);
       this.$store
         .dispatch("editStaticComponents", { payload, id })
         .then(res => {});

@@ -193,7 +193,7 @@ export default {
 
         payload.append("button_url", this.data.button_url);
 
-        payload.append("content", JSON.stringify(quill.getContents()));
+        payload.append("content", quill.root.innerHTML);
         this.$store.dispatch("addStaticComponents", payload).then(res => {
           this.$router.push("/CMS/static_components");
         });
