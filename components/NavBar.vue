@@ -68,6 +68,12 @@
         </nuxt-link>
       </div>
       <div class="navbar__parent">
+        <nuxt-link to="/CMS/contacted">
+          <i data-feather="phone-call"></i>
+          <span>User Queries</span>
+        </nuxt-link>
+      </div>
+      <div class="navbar__parent">
         <nuxt-link to="/CMS/static_components">
           <i data-feather="phone-call"></i>
           <span>Static Components</span>

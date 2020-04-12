@@ -77,7 +77,9 @@ export const state = () => ({
 
     createStaticComponents: url + "/create_static_components", //pk
 
-    delete_footer: url + "/delete_footer/" //pk
+    delete_footer: url + "/delete_footer/", //pk
+
+    getcontact: url + "/getcontact" //pk
 });
 
 export const getters = {

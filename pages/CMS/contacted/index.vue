@@ -1,93 +1,21 @@
 <template>
   <div class="navbar-spacing padding-top-30">
     <div class="holder">
-      <h3 style="display: flex;align-items: center;">Featured Startup</h3>
+      <h3 style="display: flex;align-items: center;">User Queries</h3>
       <div class="row">
         <vue-good-table :columns="columns" :rows="all_startups" :line-numbers="true">
           <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field === 'details'">
-              <div class="dropdown">
-                <div class="dd-button" @mousedown="close_dropdown">Actions</div>
-                <!-- <input type="checkbox" class="dd-input" /> -->
-                <ul class="dd-menu">
-                  <li v-if="props.row.status != 2" @click="changeStatus(props.row.id , 2)">Suspend</li>
-                  <li v-if="props.row.status != 1" @click="changeStatus(props.row.id , 1)">Active</li>
-                  <li
-                    v-if="props.row.status != 0"
-                    @click="loginAsVendor(props.row.phone_number)"
-                  >Login as Seller</li>
-                  <li
-                    v-if="props.row.status != 0"
-                    class="btn-danger red-text"
-                    @click="changeStatus(props.row.id , 0)"
-                  >Delete</li>
-                  <!-- <li class="divider"></li>
-                    <li>
-                      <a href="http://rane.io">Link to Rane.io</a>
-                  </li>-->
-                </ul>
+            <span v-if="props.column.field === 'value'">
+              <div v-if="props.row.value != '{}'">
+                <div v-for="(p, index) in props.row.value" :key="p">{{index}} : {{p}}</div>
+              </div>
+              <div v-else>
+                  <p>No Data</p>
               </div>
             </span>
-            <span v-else-if="props.column.field === 'status'">
-              <p v-if="props.row.status == 0">Deleted</p>
-              <p style="color: green;font-family:bold" v-if="props.row.status == 1">Active</p>
-              <p v-if="props.row.status == 2">Suspended</p>
-            </span>
-            <span v-else-if="props.column.field === 'featured'">
-              <p v-if="props.row.featured == true" style="color: green;font-weight:bold">Featured</p>
-              <p v-else>Not Featured</p>
-            </span>
-            <span v-else-if="props.column.field === 'featured1'">
-              <input
-                type="checkbox"
-                name="status"
-                style="height: 18px;"
-                :checked="props.row.featured"
-                @change="getId($event, props.row.id)"
-                v-bind:id="props.row.id"
-              />
-            </span>
-            <span v-else-if="props.column.field === 'name'">
-              <p>{{ props.row.name | capitalize}}</p>
-            </span>
-            <span v-else-if="props.column.field === 'payment_mode'">
-              <p v-if="props.row.payment_mode == 'Test'">Inactive</p>
-              <p
-                style="color: green;font-weight:bold"
-                v-if="props.row.payment_mode == 'Live'"
-              >Active</p>
-              <p v-if="props.row.payment_mode == 'free'">Free</p>
-            </span>
-            <span v-else-if="props.column.field === 'password'">
-              <button
-                v-if="props.row.status != 2"
-                type="button"
-                @click="passwordChange(props.row.id)"
-                class="btn btn-primary"
-              >Send SMS</button>
-            </span>
-            <span v-else-if="props.column.field === 'invoice'">
-              <button
-                type="button"
-                @click="openInvoice(props.row.id)"
-                class="btn btn-primary"
-                v-if="props.row.payment_mode == 'Live'"
-              >Invoice</button>
-            </span>
-            <span v-else-if="props.column.field === 'addressline1'">
-              <div v-if="props.row.addressline1 != ''">
-                <p>
-                  {{props.row.addressline1 | capitalize}},
-                  {{props.row.addressline2 | capitalize}},
-                  {{props.row.city | capitalize}}
-                </p>
-                <p>
-                  {{props.row.state | capitalize}},
-                  {{props.row.country | capitalize}}
-                </p>
-              </div>
-              <p v-else class="red-text bold">Incomplete</p>
-            </span>
+            <span
+              v-else-if="props.column.field === 'created_date'"
+            >{{props.row.created_date.split("T")[0]}} {{props.row.created_date.split("T")[1].split(".")[0]}}</span>
             <span v-else>{{ props.formattedRow[props.column.field] }}</span>
           </template>
         </vue-good-table>
@@ -107,33 +35,13 @@ export default {
     showDropdown1: false,
     columns: [
       {
-        label: "",
-        field: "featured1"
+        label: "User Data",
+        field: "value"
       },
-      {
-        label: "Status",
-        field: "featured"
-      },
-      {
-        label: "Name",
-        field: "name"
-      },
-      {
-        label: "Description",
-        field: "description",
-        width: "300px"
-      },
-      {
-        label: "State",
-        field: "state"
-      },
-      {
-        label: "Category",
-        field: "category.category"
-      },
+
       {
         label: "Added Date",
-        field: "added_date"
+        field: "created_date"
       }
     ],
     rows: []
@@ -154,10 +62,19 @@ export default {
   },
   methods: {
     getAllStartup: function() {
-      this.$store.dispatch("getAllStartup").then(res => {
+      this.$store.dispatch("getcontact").then(res => {
         console.log(res);
-        this.all_startups = res.data;
+        this.all_startups = res.data.filter(this.parse);
+        console.log(this.all_startups);
       });
+    },
+    parse(v) {
+      try {
+        v.value = JSON.parse(v.value);
+      } catch (error) {
+        v.value = "{}";
+      }
+      return v;
     },
     getId: function(e, id) {
       var payload = new FormData();
