@@ -57,6 +57,8 @@ export const state = () => ({
 
     categoryStatus: url + "/category_status/",
 
+    categoryHomeStatus: url + "/category_home_status/",
+
     getFooterCMS: url + "/footer_cms",
 
     activatedFooterCMS: url + "/activated_footer_cms",
@@ -79,7 +81,9 @@ export const state = () => ({
 
     delete_footer: url + "/delete_footer/", //pk
 
-    getcontact: url + "/getcontact" //pk
+    getcontact: url + "/getcontact", //pk
+
+    all_users: url + "/all_users"
 });
 
 export const getters = {

@@ -24,22 +24,25 @@
                     params: { id: props.row.id }
                   }"
                   class="btn detail"
-                  >Edit</nuxt-link
-                >
+                >Edit</nuxt-link>
                 <!-- <button
                   type="button"
                   class="btn btn-primary delete"
                   @click="deleteHomeCMS(props.row.id)"
                 >
                   Delete
-                </button> -->
+                </button>-->
               </span>
-              <span v-if="props.column.field === 'status'">
+              <span v-else-if="props.column.field === 'home_active'">
                 <input
                   type="checkbox"
-                  v-bind:id="props.row.id"
-                  v-on:change="getId(props.row.id)"
+                  v-bind:id="'home' + props.row.id"
+                  v-on:change="getHomeActive(props.row.id)"
                 />
+                <span style="margin-left: 5px">Active</span>
+              </span>
+              <span v-else-if="props.column.field === 'status'">
+                <input type="checkbox" v-bind:id="props.row.id" v-on:change="getId(props.row.id)" />
                 <span style="margin-left: 5px">Active</span>
               </span>
               <span v-else>{{ props.formattedRow[props.column.field] }}</span>
@@ -52,59 +55,81 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        columns: [
-          {
-            label: "Name",
-            field: "category"
-          },
+export default {
+  data() {
+    return {
+      columns: [
+        {
+          label: "Name",
+          field: "category"
+        },
 
-          {
-            label: "Action",
-            field: "details"
-          },
-          {
-            label: "Status",
-            field: "status"
-          }
-        ],
-        category_cms: []
-      };
-    },
-    mounted() {
-      this.CMSgetCategory();
-    },
-    methods: {
-      CMSgetCategory: function() {
-        this.$store.dispatch("CMSgetCategory").then(res => {
-          this.category_cms = JSON.parse(JSON.stringify(res.data.reverse()));
-          setTimeout(function() {
-            for (this.i in res.data) {
-              if (res.data[this.i].deleted_flag == false) {
-                $("#" + res.data[this.i].id).prop("checked", true);
-              }
-            }
-          }, 100);
-        });
-      },
+        {
+          label: "Show in Homepage",
+          field: "home_active"
+        },
 
-      getId: function(id) {
-        if ($("#" + id).is(":checked")) {
-          var payload = new FormData();
-          payload.append("id", id);
-          payload.append("deleted_flag", false);
-          this.$store.dispatch("categoryStatus", payload);
-        } else {
-          var payload = new FormData();
-          payload.append("id", id);
-          payload.append("deleted_flag", true);
-          this.$store.dispatch("categoryStatus", payload);
+        {
+          label: "Status",
+          field: "status"
+        },
+        {
+          label: "Action",
+          field: "details"
         }
+      ],
+      category_cms: []
+    };
+  },
+  mounted() {
+    this.CMSgetCategory();
+  },
+  methods: {
+    CMSgetCategory: function() {
+      this.$store.dispatch("CMSgetCategory").then(res => {
+        this.category_cms = JSON.parse(JSON.stringify(res.data.reverse()));
+        setTimeout(function() {
+          for (this.i in res.data) {
+            if (res.data[this.i].deleted_flag == false) {
+              $("#" + res.data[this.i].id).prop("checked", true);
+            }
+            if (res.data[this.i].home_active == true) {
+              $("#home" + res.data[this.i].id).prop("checked", true);
+            }
+          }
+        }, 100);
+      });
+    },
+
+    getId: function(id) {
+      if ($("#" + id).is(":checked")) {
+        var payload = new FormData();
+        payload.append("id", id);
+        payload.append("deleted_flag", false);
+        this.$store.dispatch("categoryStatus", payload);
+      } else {
+        var payload = new FormData();
+        payload.append("id", id);
+        payload.append("deleted_flag", true);
+        this.$store.dispatch("categoryStatus", payload);
+      }
+    },
+
+    getHomeActive: function(id) {
+      if ($("#home" + id).is(":checked")) {
+        var payload = new FormData();
+        payload.append("id", id);
+        payload.append("home_active", true);
+        this.$store.dispatch("categoryHomeStatus", payload);
+      } else {
+        var payload = new FormData();
+        payload.append("id", id);
+        payload.append("home_active", false);
+        this.$store.dispatch("categoryHomeStatus", payload);
       }
     }
-  };
+  }
+};
 </script>
 
 <style>

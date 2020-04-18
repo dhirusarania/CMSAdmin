@@ -188,7 +188,7 @@ export default {
   border-radius: 3px;
   padding: 4px 20px;
   font-size: 16px;
-  background-color: var(--main-bg-color);
+  background-color: #e4c443;
   color: black;
 }
 

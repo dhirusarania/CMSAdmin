@@ -173,6 +173,13 @@ export default {
       payload.append("active", this.status);
       payload.append("privacy_policy", quill.root.innerHTML);
       payload.append("site_color", this.color["hex"]);
+
+      if (typeof this.color == "object") {
+        payload.append("site_color", this.color["hex"]);
+      } else {
+        payload.append("site_color", this.color);
+      }
+
       if (this.file) {
         payload.append("header_img", this.file);
       }

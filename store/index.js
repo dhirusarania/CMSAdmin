@@ -636,6 +636,26 @@ export const actions = {
         });
     },
 
+    categoryHomeStatus({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "PUT",
+                    data: payload,
+                    url: state.api.categoryHomeStatus + payload.get("id"),
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: "token " + localStorage.getItem("token")
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
+
     addAboutCMS({ commit, state }, payload) {
         return new Promise((resolve, reject) => {
             axios({
@@ -1087,6 +1107,22 @@ export const actions = {
                     headers: {
                         Authorization: "Token " + localStorage.getItem("token")
                     }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
+
+    all_users({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.all_users,
+                    contentType: "application/json",
                 })
                 .then(res => {
                     resolve(res);

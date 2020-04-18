@@ -2,33 +2,57 @@
   <div class="navbar-spacing padding-top-30">
     <div class="specification">
       <div class="holder">
-        <div
-          class="column-padding header-bottom"
-          style="display: flex; justify-content: center"
-        >
+        <div class="column-padding header-bottom" style="display: flex; justify-content: center">
           <form>
-            <h2 style="margin-bottom: 20px; text-align: center">
-              Add About Us (Footer)
-            </h2>
+            <h2 style="margin-bottom: 20px; text-align: center">Add About Us (Footer)</h2>
             <label>Title</label>
-            <input
-              type="text"
-              id="title"
-              placeholder="Title"
-              class="form-style"
-              v-model="title"
-            />
+            <input type="text" id="title" placeholder="Title" class="form-style" v-model="title" />
 
             <label>About Us</label>
             <textarea class="form-control" v-model="about"></textarea>
+
+            <h4 style="padding-top: 20px">Social </h4>
+            <label>Facebook</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Facebook"
+              class="form-style"
+              v-model="facebook"
+            />
+            <label>Twitter</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Twitter"
+              class="form-style"
+              v-model="twitter"
+            />
+            <label>Google+</label>
+            <input type="text" id="title" placeholder="Google+" class="form-style" v-model="google" />
+            <label>Pinterest</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Pinterest"
+              class="form-style"
+              v-model="pinterest"
+            />
+            <label>Youtube</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Youtube"
+              class="form-style"
+              v-model="youtube"
+            />
+
             <button
               @click="addFooterCMS"
               type="button"
               class="btn btn-primary"
               style="background-color:rgb(76, 175, 80); color: white; display: block; margin-left:auto; margin-right:auto; padding: 10px 30px; margin-top: 30px"
-            >
-              Add
-            </button>
+            >Add</button>
           </form>
         </div>
       </div>
@@ -37,26 +61,38 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        title: "",
-        about: ""
-      };
-    },
-    mounted() {},
+export default {
+  data() {
+    return {
+      title: "",
+      about: "",
+      facebook: "",
+      twitter: "",
+      google: "",
+      pinterest: "",
+      youtube: ""
+    };
+  },
+  mounted() {},
 
-    methods: {
-      addFooterCMS: function() {
-        var payload = new FormData();
-        payload.append("title", this.title);
-        payload.append("about_us", this.about);
-        this.$store.dispatch("addFooterCMS", payload).then(res => {
-          this.$router.push("/CMS/footer");
-        });
-      }
+  methods: {
+    addFooterCMS: function() {
+      var payload = new FormData();
+      payload.append("title", this.title);
+      payload.append("about_us", this.about);
+
+      payload.append("facebook", this.facebook);
+      payload.append("twitter", this.twitter);
+      payload.append("google", this.google);
+      payload.append("pinterest", this.pinterest);
+      payload.append("youtube", this.youtube);
+
+      this.$store.dispatch("addFooterCMS", payload).then(res => {
+        this.$router.push("/CMS/footer");
+      });
     }
-  };
+  }
+};
 </script>
 
 <style>

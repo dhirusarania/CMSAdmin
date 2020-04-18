@@ -21,7 +21,7 @@
               class="form-style"
               v-model="data.title"
             />
-            <label>Button Text</label>
+            <label>Button Text (Leave Empty to hide button)</label>
             <input
               type="text"
               id="title"
@@ -170,10 +170,11 @@ export default {
           if (res.data.bgcolor == 0) {
             this.background = 0;
           }
+          this.color = res.data.bgcolor;
           if (res.data.about_image !== null) {
             this.image_url = res.data.bgimage;
           }
-          quill.container.firstChild.innerHTML = res.data.content
+          quill.container.firstChild.innerHTML = res.data.content;
         });
     },
 
@@ -187,11 +188,15 @@ export default {
 
       payload.append("bgcolor", 0);
       if (this.background == 1) {
-        payload.append("bgcolor", this.color["hex"]);
+        if (typeof this.color == "object") {
+          payload.append("bgcolor", this.color["hex"]);
+        } else {
+          payload.append("bgcolor", this.color);
+        }
       } else if (this.background == 0 && this.file) {
         payload.append("bgimage", this.file);
       }
-      payload.append("content",  quill.root.innerHTML);
+      payload.append("content", quill.root.innerHTML);
       this.$store
         .dispatch("editStaticComponents", { payload, id })
         .then(res => {});

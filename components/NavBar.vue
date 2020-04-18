@@ -2,41 +2,38 @@
   <div>
     <div class="padding-top-20">
       <nav class="topnav box-shadow padding-left-10 padding-right-10 row">
-        <!-- <div class="flex align-item col" style="height:100%">
-          <div class="visible-xs visible-sm">
-            <a @click="toggleSidenav">
-              <i data-feather="menu"></i>
-            </a>
-          </div>
-          <div class="hidden-xs">
-            <div class="tooltip_custom">
-              <nuxt-link to="/dashboard/parcels/pending">
-                <i data-feather="package"></i>
-              </nuxt-link>
-              <span class="tooltiptext">All Products</span>
+        <div class="flex align-item col" style="width:100%; justify-content: space-between;">
+          <div>
+            <div class="visible-xs visible-sm">
+              <a @click="openSidenav" class="pointer">
+                 <i data-feather="menu"></i>
+              </a>
+            </div>
+            <div class="visible-xs visible-sm">
+              <p
+                class="hide-on-large-only"
+                style="color: white;line-height:64px;font-family:'Bold'; font-size: 17px;white-space: nowrap;"
+              >FT500 Admin</p>
             </div>
           </div>
         </div>
-
-        <div class="flex align-item col right" style="height:100%; justify-content:flex-end">
-          <div class="flex align-item">
-            <div style="padding-right:10px" class="hidden-xs">
-              <p class="font-30">{{currentUserEmail}}</p>
-            </div>
-          </div>
-        </div>-->
       </nav>
     </div>
 
     <perfect-scrollbar id="mySidenav" class="sidenav hidden-xs hidden-sm padding-bottom-30">
+      <div
+        style="cursor:pointer; text-align:right;padding-right:20px"
+        class="hide-on-large-only"
+        @click="closeSidenav"
+      >
+        <i data-feather="x"></i>
+      </div>
       <div class="flex align-item" style="display: flex;justify-content: center;">
         <img :src="logo" class="sideNav__Logo" />
-        <div style="cursor:pointer" class="hide-on-med-and-up" @click="toggleSidenav">
-          <i data-feather="x"></i>
-        </div>
+
       </div>
       <p style="font-family:bold">Admin Dashboard</p>
-      <p>CMS</p>
+      <p>Website Layouts</p>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/home">
           <i data-feather="home"></i>
@@ -50,17 +47,38 @@
         </nuxt-link>
       </div>
       <div class="navbar__parent">
+        <nuxt-link to="/CMS/footer">
+          <i data-feather="info"></i>
+          <span>Footer</span>
+        </nuxt-link>
+      </div>
+
+      <p>Users & Startups</p>
+      <div class="navbar__parent">
+        <nuxt-link to="/CMS/users">
+          <i data-feather="filter"></i>
+          <span>All Users</span>
+        </nuxt-link>
+      </div>
+      <div class="navbar__parent">
         <nuxt-link to="/CMS/startup">
           <i data-feather="filter"></i>
           <span>Featured Startups</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">
+        <nuxt-link to="/category/list">
+          <i data-feather="filter"></i>
+          <span>Category List</span>
+        </nuxt-link>
+      </div>
+      <p>Queries</p>
+      <!-- <div class="navbar__parent">
         <nuxt-link to="/CMS/category">
           <i data-feather="filter"></i>
           <span>Category</span>
         </nuxt-link>
-      </div>
+      </div>-->
       <div class="navbar__parent">
         <nuxt-link to="/CMS/contact">
           <i data-feather="phone-call"></i>
@@ -73,16 +91,19 @@
           <span>User Queries</span>
         </nuxt-link>
       </div>
-      <div class="navbar__parent">
-        <nuxt-link to="/CMS/static_components">
-          <i data-feather="phone-call"></i>
-          <span>Static Components</span>
-        </nuxt-link>
-      </div>
+
       <div class="navbar__parent">
         <nuxt-link to="/CMS/contact-form">
           <i data-feather="file"></i>
           <span>Contact Us Form</span>
+        </nuxt-link>
+      </div>
+
+      <p>Components</p>
+      <div class="navbar__parent">
+        <nuxt-link to="/CMS/static_components">
+          <i data-feather="phone-call"></i>
+          <span>Static Components</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">
@@ -103,19 +124,7 @@
           <span>Category Components</span>
         </nuxt-link>
       </div>
-      <div class="navbar__parent">
-        <nuxt-link to="/CMS/footer">
-          <i data-feather="info"></i>
-          <span>Footer</span>
-        </nuxt-link>
-      </div>
-      <p>Listing Category</p>
-      <div class="navbar__parent">
-        <nuxt-link to="/category/list">
-          <i data-feather="filter"></i>
-          <span>Category List</span>
-        </nuxt-link>
-      </div>
+
       <p style="cursor: pointer" @click="logOutAdmin" class="logOut">Log Out [{{ username }}]</p>
 
       <!-- <p>Orders</p>
@@ -294,6 +303,14 @@ export default {
       });
     },
 
+    closeSidenav: function() {
+      $("#mySidenav").removeClass("open");
+      $("body").removeClass("overflow");
+    },
+    openSidenav: function() {
+      $("#mySidenav").addClass("open");
+      $("body").addClass("overflow");
+    },
     logout: function() {
       document.cookie.split(";").forEach(function(c) {
         document.cookie = c
@@ -393,6 +410,9 @@ p {
   .sidenav {
     transform: translate3d(-260px, 0, 0);
   }
+  .sidenav.open {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .breadcrumb {
@@ -412,7 +432,7 @@ p {
   float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 10px;
+  padding: 18px 10px;
   text-decoration: none;
   font-size: 17px;
 }
