@@ -48,7 +48,7 @@
       </div>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/footer">
-          <i data-feather="info"></i>
+          <i data-feather="arrow-down-circle"></i>
           <span>Footer</span>
         </nuxt-link>
       </div>
@@ -56,7 +56,7 @@
       <p>Users & Startups</p>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/users">
-          <i data-feather="filter"></i>
+          <i data-feather="users"></i>
           <span>All Users</span>
         </nuxt-link>
       </div>
@@ -68,7 +68,7 @@
       </div>
       <div class="navbar__parent">
         <nuxt-link to="/category/list">
-          <i data-feather="filter"></i>
+          <i data-feather="copy"></i>
           <span>Category List</span>
         </nuxt-link>
       </div>
@@ -87,7 +87,7 @@
       </div>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/contacted">
-          <i data-feather="phone-call"></i>
+          <i data-feather="user-check"></i>
           <span>User Queries</span>
         </nuxt-link>
       </div>
@@ -102,25 +102,25 @@
       <p>Components</p>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/static_components">
-          <i data-feather="phone-call"></i>
+          <i data-feather="hash"></i>
           <span>Static Components</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/home_components">
-          <i data-feather="home"></i>
+          <i data-feather="hash"></i>
           <span>Home Components</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/about_components">
-          <i data-feather="home"></i>
+          <i data-feather="hash"></i>
           <span>About Components</span>
         </nuxt-link>
       </div>
       <div class="navbar__parent">
         <nuxt-link to="/CMS/category_components">
-          <i data-feather="home"></i>
+          <i data-feather="hash"></i>
           <span>Category Components</span>
         </nuxt-link>
       </div>
